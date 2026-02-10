@@ -1,3 +1,7 @@
-# data-mining-initiative-2
+# Персональная ОС — Orbit OS
 
-Initial repository setup for pr-poehali-dev/data-mining-initiative-2
+![Preview](https://cdn.poehali.dev/templates/personal-os-ru/preview-ru.jpg)
+
+Персональный сайт-портфолио в стиле операционной системы. Включает AI-чат на главной странице, анимированного робота-аватара и мини-приложения: обо мне, резюме, статьи и арт-галерея. Идеально для креативных специалистов, разработчиков и дизайнеров, которые хотят выделиться необычной подачей.
+
+`"tags": ["portfolio", "brutalist", "light", "creative", "animations"]`
