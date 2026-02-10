@@ -1,0 +1,16 @@
+{
+  "tests": [
+    {
+      "name": "Seed establishments data",
+      "method": "POST",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "inserted": "number",
+        "total": "number"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

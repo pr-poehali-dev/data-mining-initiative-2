@@ -20,12 +20,13 @@ interface Establishment {
   website?: string
 }
 
-const CATEGORY_LABELS = {
-  restaurant: "Рестораны",
-  cafe: "Кафе",
-  bar: "Бары",
-  entertainment: "Развлечения",
-}
+const CATEGORY_ORDER = [
+  'restaurant', 'cafe', 'bar', 'entertainment',
+  'beauty', 'health', 'fitness', 'education',
+  'shopping', 'hotel', 'auto', 'bank',
+  'pharmacy', 'petshop', 'culture', 'kids',
+  'repair', 'transport'
+]
 
 export function EstablishmentsSection() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
@@ -52,7 +53,7 @@ export function EstablishmentsSection() {
       const data = await response.json()
       setEstablishments(data.establishments || [])
 
-      // Подсчитываем категории для счётчиков
+      // Подсчитываем категории для счётчиков (всегда загружаем все для счётчиков)
       if (selectedCategory === 'all' && selectedDistrict === 'all' && !searchQuery) {
         const counts: Record<string, number> = {}
         data.establishments.forEach((est: Establishment) => {
@@ -107,19 +108,27 @@ export function EstablishmentsSection() {
             >
               Все ({establishments.length})
             </Button>
-            {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
-              <Button
-                key={key}
-                onClick={() => setSelectedCategory(key)}
-                className={`border-[2px] border-black font-bold text-sm ${
-                  selectedCategory === key
-                    ? "bg-[#FF2E63] text-white"
-                    : "bg-white text-black hover:bg-gray-50"
-                }`}
-              >
-                {label} ({categoryCounts[key] || 0})
-              </Button>
-            ))}
+            {CATEGORY_ORDER.map((key) => {
+              const count = categoryCounts[key] || 0
+              if (count === 0 && selectedCategory !== key) return null
+              
+              // Получаем название категории из первого заведения с этой категорией
+              const categoryName = establishments.find(e => e.category_slug === key)?.category_name || key
+              
+              return (
+                <Button
+                  key={key}
+                  onClick={() => setSelectedCategory(key)}
+                  className={`border-[2px] border-black font-bold text-sm ${
+                    selectedCategory === key
+                      ? "bg-[#FF2E63] text-white"
+                      : "bg-white text-black hover:bg-gray-50"
+                  }`}
+                >
+                  {categoryName} ({count})
+                </Button>
+              )
+            })}
           </div>
         </div>
 
