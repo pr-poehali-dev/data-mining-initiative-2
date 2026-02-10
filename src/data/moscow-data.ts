@@ -70,10 +70,30 @@ export const SAMPLE_ATTRACTIONS: Attraction[] = [
 export const SAMPLE_ESTABLISHMENTS: Establishment[] = [
   { id: "1", name: "Кафе Пушкинъ", category: "restaurant", district: "cao", description: "Ресторан русской кухни в историческом особняке", isPremium: true },
   { id: "2", name: "Белуга", category: "restaurant", district: "cao", description: "Ресторан современной русской кухни", isPremium: true },
-  { id: "3", name: "Кофемания", category: "cafe", district: "cao", description: "Сеть демократичных кафе-кондитерских" },
-  { id: "4", name: "Starbucks", category: "cafe", district: "cao", description: "Международная сеть кофеен" },
-  { id: "5", name: "32.05", category: "bar", district: "cao", description: "Бар на 85-м этаже башни ОКО с панорамным видом", isPremium: true },
-  { id: "6", name: "Небо", category: "bar", district: "cao", description: "Ресторан-бар на крыше с видом на Москву" },
+  { id: "3", name: "Турандот", category: "restaurant", district: "cao", description: "Роскошный ресторан в дворцовых интерьерах", isPremium: true },
+  { id: "4", name: "Мясницкий ряд", category: "restaurant", district: "cao", description: "Стейк-хаус с мраморным мясом" },
+  { id: "5", name: "Пряности & Радости", category: "restaurant", district: "svao", description: "Уютный семейный ресторан грузинской кухни" },
+  { id: "6", name: "Корчма Тарас Бульба", category: "restaurant", district: "sao", description: "Сеть украинских ресторанов" },
+  
+  { id: "7", name: "Кофемания", category: "cafe", district: "cao", description: "Сеть демократичных кафе-кондитерских" },
+  { id: "8", name: "Starbucks", category: "cafe", district: "cao", description: "Международная сеть кофеен", isPremium: true },
+  { id: "9", name: "Буше", category: "cafe", district: "vao", description: "Французская пекарня-кондитерская" },
+  { id: "10", name: "Андерсон", category: "cafe", district: "zao", description: "Семейное кафе с детской зоной" },
+  { id: "11", name: "Coffee Bean", category: "cafe", district: "uzao", description: "Specialty coffee и авторские десерты" },
+  { id: "12", name: "Цех85", category: "cafe", district: "cao", description: "Пекарня с авторским хлебом" },
+  
+  { id: "13", name: "32.05", category: "bar", district: "cao", description: "Бар на 85-м этаже башни ОКО с панорамным видом", isPremium: true },
+  { id: "14", name: "Небо", category: "bar", district: "cao", description: "Ресторан-бар на крыше с видом на Москву", isPremium: true },
+  { id: "15", name: "Noor", category: "bar", district: "cao", description: "Коктейльный бар в восточном стиле" },
+  { id: "16", name: "Lawson's Bar", category: "bar", district: "cao", description: "Крафтовый бар с авторскими коктейлями" },
+  { id: "17", name: "Simach", category: "bar", district: "svao", description: "Демократичный бар с живой музыкой" },
+  
+  { id: "18", name: "Москвариум", category: "entertainment", district: "svao", description: "Океанариум на ВДНХ с шоу дельфинов", isPremium: true },
+  { id: "19", name: "Парк Горького", category: "entertainment", district: "cao", description: "Центральный парк культуры и отдыха" },
+  { id: "20", name: "ВДНХ", category: "entertainment", district: "svao", description: "Выставочный комплекс и парк развлечений", isPremium: true },
+  { id: "21", name: "Зарядье", category: "entertainment", district: "cao", description: "Современный парк с уникальными ландшафтами" },
+  { id: "22", name: "Киноцентр Октябрь", category: "entertainment", district: "cao", description: "Исторический кинотеатр на Новом Арбате" },
+  { id: "23", name: "Dream Island", category: "entertainment", district: "uao", description: "Крытый тематический парк развлечений" },
 ]
 
 export const TRANSPORT_INFO = {

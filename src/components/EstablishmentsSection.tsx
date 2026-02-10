@@ -1,0 +1,212 @@
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import Icon from "@/components/ui/icon"
+import { SAMPLE_ESTABLISHMENTS, MOSCOW_DISTRICTS, type Establishment } from "@/data/moscow-data"
+
+const CATEGORY_LABELS = {
+  restaurant: "Рестораны",
+  cafe: "Кафе",
+  bar: "Бары",
+  entertainment: "Развлечения",
+}
+
+export function EstablishmentsSection() {
+  const [selectedCategory, setSelectedCategory] = useState<string>("all")
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("all")
+  const [searchQuery, setSearchQuery] = useState("")
+
+  const filteredEstablishments = SAMPLE_ESTABLISHMENTS.filter((est) => {
+    const matchesCategory = selectedCategory === "all" || est.category === selectedCategory
+    const matchesDistrict = selectedDistrict === "all" || est.district === selectedDistrict
+    const matchesSearch =
+      searchQuery === "" || est.name.toLowerCase().includes(searchQuery.toLowerCase())
+
+    return matchesCategory && matchesDistrict && matchesSearch
+  })
+
+  const premiumEstablishments = filteredEstablishments.filter((e) => e.isPremium)
+  const regularEstablishments = filteredEstablishments.filter((e) => !e.isPremium)
+
+  const getCategoryIcon = (category: string) => {
+    switch (category) {
+      case "restaurant":
+        return "UtensilsCrossed"
+      case "cafe":
+        return "Coffee"
+      case "bar":
+        return "Wine"
+      case "entertainment":
+        return "PartyPopper"
+      default:
+        return "MapPin"
+    }
+  }
+
+  return (
+    <div className="bg-white p-6 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <h3 className="text-3xl font-black mb-6 flex items-center gap-3">
+        <Icon name="UtensilsCrossed" size={32} />
+        Заведения Москвы
+      </h3>
+
+      <div className="mb-6 space-y-4">
+        <div className="relative">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Поиск заведения..."
+            className="w-full p-3 pr-10 border-[3px] border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] bg-white text-black font-medium text-sm focus:outline-none"
+          />
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <Icon name="Search" size={18} />
+          </div>
+        </div>
+
+        <div>
+          <p className="text-sm font-bold mb-2">Категория:</p>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => setSelectedCategory("all")}
+              className={`border-[2px] border-black font-bold text-sm ${
+                selectedCategory === "all"
+                  ? "bg-[#FF2E63] text-white"
+                  : "bg-white text-black hover:bg-gray-50"
+              }`}
+            >
+              Все ({SAMPLE_ESTABLISHMENTS.length})
+            </Button>
+            {Object.entries(CATEGORY_LABELS).map(([key, label]) => {
+              const count = SAMPLE_ESTABLISHMENTS.filter((e) => e.category === key).length
+              return (
+                <Button
+                  key={key}
+                  onClick={() => setSelectedCategory(key)}
+                  className={`border-[2px] border-black font-bold text-sm ${
+                    selectedCategory === key
+                      ? "bg-[#FF2E63] text-white"
+                      : "bg-white text-black hover:bg-gray-50"
+                  }`}
+                >
+                  {label} ({count})
+                </Button>
+              )
+            })}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-sm font-bold mb-2">Округ:</p>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => setSelectedDistrict("all")}
+              className={`border-[2px] border-black font-bold text-sm ${
+                selectedDistrict === "all"
+                  ? "bg-[#FF2E63] text-white"
+                  : "bg-white text-black hover:bg-gray-50"
+              }`}
+            >
+              Все округа
+            </Button>
+            {MOSCOW_DISTRICTS.slice(0, 6).map((district) => (
+              <Button
+                key={district.id}
+                onClick={() => setSelectedDistrict(district.id)}
+                className={`border-[2px] border-black font-bold text-sm ${
+                  selectedDistrict === district.id
+                    ? "bg-[#FF2E63] text-white"
+                    : "bg-white text-black hover:bg-gray-50"
+                }`}
+              >
+                {district.name.replace(" АО", "")}
+              </Button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-4 p-3 bg-gray-50 border-[2px] border-black">
+        <p className="text-sm font-bold">
+          Найдено: {filteredEstablishments.length} {filteredEstablishments.length === 1 ? "заведение" : "заведений"}
+          {premiumEstablishments.length > 0 && (
+            <span className="text-[#FF2E63]"> (в том числе {premiumEstablishments.length} рекомендуемых)</span>
+          )}
+        </p>
+      </div>
+
+      <div className="space-y-6">
+        {premiumEstablishments.length > 0 && (
+          <div>
+            <h4 className="text-xl font-bold mb-4 flex items-center gap-2">
+              <span className="text-2xl">⭐</span>
+              <span className="text-[#FF2E63]">Рекомендуемые заведения</span>
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {premiumEstablishments.map((est) => (
+                <div
+                  key={est.id}
+                  className="p-5 border-[3px] border-[#FF2E63] bg-[#FFF5F7] shadow-[4px_4px_0px_0px_rgba(255,46,99,1)] hover:shadow-[2px_2px_0px_0px_rgba(255,46,99,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all cursor-pointer"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-10 h-10 bg-[#FF2E63] border-[2px] border-black flex items-center justify-center">
+                        <Icon name={getCategoryIcon(est.category)} size={20} className="text-white" />
+                      </div>
+                      <div>
+                        <h5 className="text-lg font-black">{est.name}</h5>
+                        <p className="text-xs text-gray-600">
+                          {CATEGORY_LABELS[est.category as keyof typeof CATEGORY_LABELS]}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-xs bg-[#FF2E63] text-white px-2 py-1 font-bold border-[2px] border-black whitespace-nowrap">
+                      PREMIUM
+                    </span>
+                  </div>
+                  <p className="text-sm leading-relaxed">{est.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {regularEstablishments.length > 0 && (
+          <div>
+            {premiumEstablishments.length > 0 && (
+              <h4 className="text-xl font-bold mb-4">Остальные заведения</h4>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {regularEstablishments.map((est) => (
+                <div
+                  key={est.id}
+                  className="p-4 border-[2px] border-black bg-gray-50 hover:bg-white hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 bg-black flex items-center justify-center">
+                      <Icon name={getCategoryIcon(est.category)} size={16} className="text-white" />
+                    </div>
+                    <div>
+                      <h5 className="text-base font-bold">{est.name}</h5>
+                      <p className="text-xs text-gray-600">
+                        {CATEGORY_LABELS[est.category as keyof typeof CATEGORY_LABELS]}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-700">{est.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {filteredEstablishments.length === 0 && (
+          <div className="text-center py-12">
+            <Icon name="SearchX" size={48} className="mx-auto mb-4 text-gray-400" />
+            <p className="text-lg font-bold text-gray-600">Заведения не найдены</p>
+            <p className="text-sm text-gray-500 mt-2">Попробуйте изменить фильтры или поисковый запрос</p>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}

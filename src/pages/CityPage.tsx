@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
+import { EstablishmentsSection } from "@/components/EstablishmentsSection"
 import {
   MOSCOW_DISTRICTS,
   MO_CITIES,
@@ -258,6 +259,10 @@ export default function CityPage() {
             </div>
           </div>
 
+          <div className="mb-8">
+            <EstablishmentsSection />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             <div className="bg-white p-6 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-3 mb-4">
@@ -277,12 +282,12 @@ export default function CityPage() {
             <div className="bg-white p-6 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-[#FF2E63] border-[3px] border-black flex items-center justify-center">
-                  <Icon name="UtensilsCrossed" size={24} className="text-white" />
+                  <Icon name="Camera" size={24} className="text-white" />
                 </div>
-                <h3 className="text-2xl font-black">Заведения</h3>
+                <h3 className="text-2xl font-black">Фотогалерея</h3>
               </div>
               <p className="text-gray-700 mb-4">
-                {SAMPLE_ESTABLISHMENTS.length}+ ресторанов, кафе и баров. Фильтры по районам и категориям.
+                Исторические и современные фотографии Москвы — от XIX века до наших дней.
               </p>
               <Button className="w-full bg-[#FF2E63] text-white border-[3px] border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all font-bold">
                 Открыть раздел
