@@ -1,7 +1,24 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import Icon from "@/components/ui/icon"
-import { SAMPLE_ESTABLISHMENTS, MOSCOW_DISTRICTS, type Establishment } from "@/data/moscow-data"
+import { MOSCOW_DISTRICTS } from "@/data/moscow-data"
+
+interface Establishment {
+  id: string
+  name: string
+  slug: string
+  description: string
+  category_slug: string
+  category_name: string
+  category_icon: string
+  district_slug: string
+  district_name: string
+  is_premium: boolean
+  rating?: number
+  address?: string
+  phone?: string
+  website?: string
+}
 
 const CATEGORY_LABELS = {
   restaurant: "Рестораны",
@@ -14,33 +31,47 @@ export function EstablishmentsSection() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all")
   const [selectedDistrict, setSelectedDistrict] = useState<string>("all")
   const [searchQuery, setSearchQuery] = useState("")
+  const [establishments, setEstablishments] = useState<Establishment[]>([])
+  const [loading, setLoading] = useState(true)
+  const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({})
 
-  const filteredEstablishments = SAMPLE_ESTABLISHMENTS.filter((est) => {
-    const matchesCategory = selectedCategory === "all" || est.category === selectedCategory
-    const matchesDistrict = selectedDistrict === "all" || est.district === selectedDistrict
-    const matchesSearch =
-      searchQuery === "" || est.name.toLowerCase().includes(searchQuery.toLowerCase())
+  useEffect(() => {
+    fetchEstablishments()
+  }, [selectedCategory, selectedDistrict, searchQuery])
 
-    return matchesCategory && matchesDistrict && matchesSearch
-  })
+  const fetchEstablishments = async () => {
+    setLoading(true)
+    try {
+      const params = new URLSearchParams()
+      params.set('city', 'москва')
+      if (selectedCategory !== 'all') params.set('category', selectedCategory)
+      if (selectedDistrict !== 'all') params.set('district', selectedDistrict)
+      if (searchQuery) params.set('search', searchQuery)
 
-  const premiumEstablishments = filteredEstablishments.filter((e) => e.isPremium)
-  const regularEstablishments = filteredEstablishments.filter((e) => !e.isPremium)
+      const response = await fetch(`https://functions.poehali.dev/771cd3c7-eb6c-4f01-bc2d-f7ab39d0f0c6?${params}`)
+      const data = await response.json()
+      setEstablishments(data.establishments || [])
 
-  const getCategoryIcon = (category: string) => {
-    switch (category) {
-      case "restaurant":
-        return "UtensilsCrossed"
-      case "cafe":
-        return "Coffee"
-      case "bar":
-        return "Wine"
-      case "entertainment":
-        return "PartyPopper"
-      default:
-        return "MapPin"
+      // Подсчитываем категории для счётчиков
+      if (selectedCategory === 'all' && selectedDistrict === 'all' && !searchQuery) {
+        const counts: Record<string, number> = {}
+        data.establishments.forEach((est: Establishment) => {
+          counts[est.category_slug] = (counts[est.category_slug] || 0) + 1
+        })
+        setCategoryCounts(counts)
+      }
+    } catch (error) {
+      console.error('Error fetching establishments:', error)
+      setEstablishments([])
+    } finally {
+      setLoading(false)
     }
   }
+
+  const premiumEstablishments = establishments.filter((e) => e.is_premium)
+  const regularEstablishments = establishments.filter((e) => !e.is_premium)
+
+
 
   return (
     <div className="bg-white p-6 border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -74,24 +105,21 @@ export function EstablishmentsSection() {
                   : "bg-white text-black hover:bg-gray-50"
               }`}
             >
-              Все ({SAMPLE_ESTABLISHMENTS.length})
+              Все ({establishments.length})
             </Button>
-            {Object.entries(CATEGORY_LABELS).map(([key, label]) => {
-              const count = SAMPLE_ESTABLISHMENTS.filter((e) => e.category === key).length
-              return (
-                <Button
-                  key={key}
-                  onClick={() => setSelectedCategory(key)}
-                  className={`border-[2px] border-black font-bold text-sm ${
-                    selectedCategory === key
-                      ? "bg-[#FF2E63] text-white"
-                      : "bg-white text-black hover:bg-gray-50"
-                  }`}
-                >
-                  {label} ({count})
-                </Button>
-              )
-            })}
+            {Object.entries(CATEGORY_LABELS).map(([key, label]) => (
+              <Button
+                key={key}
+                onClick={() => setSelectedCategory(key)}
+                className={`border-[2px] border-black font-bold text-sm ${
+                  selectedCategory === key
+                    ? "bg-[#FF2E63] text-white"
+                    : "bg-white text-black hover:bg-gray-50"
+                }`}
+              >
+                {label} ({categoryCounts[key] || 0})
+              </Button>
+            ))}
           </div>
         </div>
 
@@ -127,13 +155,19 @@ export function EstablishmentsSection() {
 
       <div className="mb-4 p-3 bg-gray-50 border-[2px] border-black">
         <p className="text-sm font-bold">
-          Найдено: {filteredEstablishments.length} {filteredEstablishments.length === 1 ? "заведение" : "заведений"}
+          Найдено: {establishments.length} {establishments.length === 1 ? "заведение" : "заведений"}
           {premiumEstablishments.length > 0 && (
             <span className="text-[#FF2E63]"> (в том числе {premiumEstablishments.length} рекомендуемых)</span>
           )}
         </p>
       </div>
 
+      {loading ? (
+        <div className="text-center py-12">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-black border-t-transparent"></div>
+          <p className="mt-4 text-lg font-bold">Загрузка заведений...</p>
+        </div>
+      ) : (
       <div className="space-y-6">
         {premiumEstablishments.length > 0 && (
           <div>
@@ -150,12 +184,12 @@ export function EstablishmentsSection() {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-2">
                       <div className="w-10 h-10 bg-[#FF2E63] border-[2px] border-black flex items-center justify-center">
-                        <Icon name={getCategoryIcon(est.category)} size={20} className="text-white" />
+                        <Icon name={est.category_icon || 'MapPin'} size={20} className="text-white" />
                       </div>
                       <div>
                         <h5 className="text-lg font-black">{est.name}</h5>
                         <p className="text-xs text-gray-600">
-                          {CATEGORY_LABELS[est.category as keyof typeof CATEGORY_LABELS]}
+                          {est.category_name}
                         </p>
                       </div>
                     </div>
@@ -183,12 +217,12 @@ export function EstablishmentsSection() {
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-8 h-8 bg-black flex items-center justify-center">
-                      <Icon name={getCategoryIcon(est.category)} size={16} className="text-white" />
+                      <Icon name={est.category_icon || 'MapPin'} size={16} className="text-white" />
                     </div>
                     <div>
                       <h5 className="text-base font-bold">{est.name}</h5>
                       <p className="text-xs text-gray-600">
-                        {CATEGORY_LABELS[est.category as keyof typeof CATEGORY_LABELS]}
+                        {est.category_name}
                       </p>
                     </div>
                   </div>
@@ -199,7 +233,7 @@ export function EstablishmentsSection() {
           </div>
         )}
 
-        {filteredEstablishments.length === 0 && (
+        {establishments.length === 0 && (
           <div className="text-center py-12">
             <Icon name="SearchX" size={48} className="mx-auto mb-4 text-gray-400" />
             <p className="text-lg font-bold text-gray-600">Заведения не найдены</p>
@@ -207,6 +241,7 @@ export function EstablishmentsSection() {
           </div>
         )}
       </div>
+      )}
     </div>
   )
 }
