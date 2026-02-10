@@ -123,10 +123,13 @@ def generate_establishments():
     establishments = []
     id_counter = 1000  # Начинаем с 1000 чтобы не конфликтовать
     
-    # Рестораны (50 объектов)
-    for i, name in enumerate(RESTAURANT_NAMES):
+    # Рестораны (120 объектов)
+    for i in range(120):
+        name = RESTAURANT_NAMES[i % len(RESTAURANT_NAMES)]
+        if i >= len(RESTAURANT_NAMES):
+            name = f'{name} #{i // len(RESTAURANT_NAMES) + 1}'
         district = DISTRICTS[i % len(DISTRICTS)]
-        is_premium = i % 4 == 0  # Каждый 4-й премиум
+        is_premium = i % 4 == 0
         establishments.append({
             'id': id_counter,
             'category': 'restaurant',
@@ -139,10 +142,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Кафе (40 объектов)
-    for i, name in enumerate(CAFE_NAMES * 2):  # Удваиваем список
-        if i >= 40:
-            break
+    # Кафе (100 объектов)
+    for i in range(100):
+        name = CAFE_NAMES[i % len(CAFE_NAMES)]
+        if i >= len(CAFE_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 5 == 0
         establishments.append({
@@ -157,10 +161,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Бары (30 объектов)
-    for i, name in enumerate(BAR_NAMES * 2):
-        if i >= 30:
-            break
+    # Бары (60 объектов)
+    for i in range(60):
+        name = BAR_NAMES[i % len(BAR_NAMES)]
+        if i >= len(BAR_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 4 == 0
         establishments.append({
@@ -175,10 +180,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Салоны красоты (40 объектов)
-    for i, name in enumerate(BEAUTY_NAMES * 2):
-        if i >= 40:
-            break
+    # Салоны красоты (80 объектов)
+    for i in range(80):
+        name = BEAUTY_NAMES[i % len(BEAUTY_NAMES)]
+        if i >= len(BEAUTY_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 5 == 0
         establishments.append({
@@ -193,10 +199,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Медицина (35 объектов)
-    for i, name in enumerate(HEALTH_NAMES * 2):
-        if i >= 35:
-            break
+    # Медицина (70 объектов)
+    for i in range(70):
+        name = HEALTH_NAMES[i % len(HEALTH_NAMES)]
+        if i >= len(HEALTH_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 4 == 0
         establishments.append({
@@ -211,10 +218,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Фитнес (30 объектов)
-    for i, name in enumerate(FITNESS_NAMES * 2):
-        if i >= 30:
-            break
+    # Фитнес (60 объектов)
+    for i in range(60):
+        name = FITNESS_NAMES[i % len(FITNESS_NAMES)]
+        if i >= len(FITNESS_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 5 == 0
         establishments.append({
@@ -229,10 +237,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Образование (25 объектов)
-    for i, name in enumerate(EDUCATION_NAMES * 2):
-        if i >= 25:
-            break
+    # Образование (50 объектов)
+    for i in range(50):
+        name = EDUCATION_NAMES[i % len(EDUCATION_NAMES)]
+        if i >= len(EDUCATION_NAMES):
+            name = f'{name} филиал {i // len(EDUCATION_NAMES) + 1}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 4 == 0
         establishments.append({
@@ -247,10 +256,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Магазины (50 объектов)
-    for i, name in enumerate(SHOPPING_NAMES * 2):
-        if i >= 50:
-            break
+    # Магазины (120 объектов)
+    for i in range(120):
+        name = SHOPPING_NAMES[i % len(SHOPPING_NAMES)]
+        if i >= len(SHOPPING_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 6 == 0
         establishments.append({
@@ -265,10 +275,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Отели (25 объектов)
-    for i, name in enumerate(HOTEL_NAMES * 2):
-        if i >= 25:
-            break
+    # Отели (50 объектов)
+    for i in range(50):
+        name = HOTEL_NAMES[i % len(HOTEL_NAMES)]
+        if i >= len(HOTEL_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 3 == 0
         establishments.append({
@@ -283,10 +294,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Автосервисы (25 объектов)
-    for i, name in enumerate(AUTO_NAMES * 2):
-        if i >= 25:
-            break
+    # Автосервисы (50 объектов)
+    for i in range(50):
+        name = AUTO_NAMES[i % len(AUTO_NAMES)]
+        if i >= len(AUTO_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 4 == 0
         establishments.append({
@@ -301,17 +313,16 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Банки (30 объектов)
-    for i, name in enumerate(BANK_NAMES * 3):
-        if i >= 30:
-            break
+    # Банки (70 объектов)
+    for i in range(70):
+        name = BANK_NAMES[i % len(BANK_NAMES)]
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 5 == 0
         establishments.append({
             'id': id_counter,
             'category': 'bank',
             'district': district,
-            'name': f'{name} (отделение)',
+            'name': f'{name} на {district.upper()}',
             'slug': f'bank-{id_counter}',
             'description': f'Отделение {name} - банковские услуги для физлиц',
             'is_premium': is_premium,
@@ -319,17 +330,16 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Аптеки (35 объектов)
-    for i, name in enumerate(PHARMACY_NAMES * 3):
-        if i >= 35:
-            break
+    # Аптеки (80 объектов)
+    for i in range(80):
+        name = PHARMACY_NAMES[i % len(PHARMACY_NAMES)]
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 6 == 0
         establishments.append({
             'id': id_counter,
             'category': 'pharmacy',
             'district': district,
-            'name': f'Аптека {name}',
+            'name': f'Аптека {name} на {district.upper()}',
             'slug': f'pharmacy-{id_counter}',
             'description': f'{name} - лекарства по рецептам и без, круглосуточно',
             'is_premium': is_premium,
@@ -337,10 +347,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Зоотовары (20 объектов)
-    for i, name in enumerate(PETSHOP_NAMES * 2):
-        if i >= 20:
-            break
+    # Зоотовары (40 объектов)
+    for i in range(40):
+        name = PETSHOP_NAMES[i % len(PETSHOP_NAMES)]
+        if i >= len(PETSHOP_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 4 == 0
         establishments.append({
@@ -355,10 +366,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Культура (30 объектов)
-    for i, name in enumerate(CULTURE_NAMES * 2):
-        if i >= 30:
-            break
+    # Культура (60 объектов)
+    for i in range(60):
+        name = CULTURE_NAMES[i % len(CULTURE_NAMES)]
+        if i >= len(CULTURE_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 5 == 0
         establishments.append({
@@ -373,10 +385,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Детские центры (25 объектов)
-    for i, name in enumerate(KIDS_NAMES * 2):
-        if i >= 25:
-            break
+    # Детские центры (50 объектов)
+    for i in range(50):
+        name = KIDS_NAMES[i % len(KIDS_NAMES)]
+        if i >= len(KIDS_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 4 == 0
         establishments.append({
@@ -391,10 +404,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Ремонт (20 объектов)
-    for i, name in enumerate(REPAIR_NAMES * 2):
-        if i >= 20:
-            break
+    # Ремонт (40 объектов)
+    for i in range(40):
+        name = REPAIR_NAMES[i % len(REPAIR_NAMES)]
+        if i >= len(REPAIR_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 5 == 0
         establishments.append({
@@ -409,10 +423,11 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Транспорт (20 объектов)
-    for i, name in enumerate(TRANSPORT_NAMES * 2):
-        if i >= 20:
-            break
+    # Транспорт (40 объектов)
+    for i in range(40):
+        name = TRANSPORT_NAMES[i % len(TRANSPORT_NAMES)]
+        if i >= len(TRANSPORT_NAMES):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 4 == 0
         establishments.append({
@@ -427,15 +442,16 @@ def generate_establishments():
         })
         id_counter += 1
     
-    # Развлечения (25 объектов)
+    # Развлечения (50 объектов)
     entertainment_names = [
         'Парк аттракционов', 'Боулинг', 'Бильярд', 'Квеструм', 'Антикафе',
         'Караоке', 'Кинотеатр IMAX', 'Планетарий', 'Аквапарк', 'Роллердром',
         'Картинг', 'Лазертаг', 'Батутный центр', 'Скалодром', 'VR-клуб'
     ]
-    for i, name in enumerate(entertainment_names * 2):
-        if i >= 25:
-            break
+    for i in range(50):
+        name = entertainment_names[i % len(entertainment_names)]
+        if i >= len(entertainment_names):
+            name = f'{name} на {DISTRICTS[i % len(DISTRICTS)].upper()}'
         district = DISTRICTS[i % len(DISTRICTS)]
         is_premium = i % 4 == 0
         establishments.append({
