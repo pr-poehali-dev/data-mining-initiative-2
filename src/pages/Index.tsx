@@ -2,6 +2,7 @@ import { AnimatedRobot } from "@/components/AnimatedRobot"
 import { ChatPanel } from "@/components/ChatPanel"
 import { Dock } from "@/components/Dock"
 import { OSOverlay } from "@/components/OSOverlay"
+import { CitySearch } from "@/components/CitySearch"
 
 export default function HomePage() {
   return (
@@ -36,8 +37,13 @@ export default function HomePage() {
             <p className="text-lg font-semibold text-center text-gray-700">Полный справочник городов: история, достопримечательности, заведения</p>
           </div>
 
+          {/* City Search */}
+          <CitySearch />
+          
           {/* Chat Panel */}
-          <ChatPanel />
+          <div className="mt-8">
+            <ChatPanel />
+          </div>
         </div>
 
         <div className="relative z-10 pb-4">
